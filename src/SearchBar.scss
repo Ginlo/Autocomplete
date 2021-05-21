@@ -1,0 +1,68 @@
+.searchbar-container {
+  margin-top: 5vh;
+  background-color: #282c34;
+  min-height: 100vh;
+
+  .searchbar-placeholder {
+    color: #f8f8ff;
+  }
+
+  .searchbar-textfield {
+    width: 100px;
+    margin: 10px 0 10px 0;
+    border: 0;
+    outline: none;
+    padding: 7px;
+    border-radius: 4px;
+    transition: all 0.1s linear;
+
+    &:focus {
+      border: 2px solid #61dafb;
+      width: 300px;
+    }
+
+    &.failure {
+      border: 2px solid red;
+      width: 300px;
+    }
+  }
+
+  .MuiList-root {
+    margin-left: 50px;
+    margin-right: 50px;
+    background-color: white;
+    box-shadow: #282c34 0 0 5px 0;
+    border-radius: 4px;
+
+    .MuiListItemText-root {
+      background-color: rgb(40, 44, 52, 0.05);
+      border-radius: 4px;
+
+      &:hover {
+        background-color: rgb(40, 44, 52, 0.1);
+      }
+
+      span {
+        margin: 4px;
+      }
+
+      .listItemText {
+        margin-left: 30px;
+      }
+    }
+  }
+}
+
+a,
+a:hover,
+a:focus,
+a:active {
+  text-decoration: none;
+  color: inherit;
+}
+
+svg {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
