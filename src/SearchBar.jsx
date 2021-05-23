@@ -7,8 +7,37 @@ import GitHubIcon from "@material-ui/icons/GitHub";
 export const SearchBar = () => {
   const [items, setItems] = useState([]);
   const [failure, setFailure] = useState(false);
+  const [activeItem, setActiveItem] = useState(-1);
   const [resultsVisible, setResultsVisible] = useState(false);
-  const wrapperRef = useRef(null);
+  const listWrapperRef = useRef(null);
+  const listItemRef = useRef(null);
+
+  document.onkeydown = (e) => {
+    switch (e.key) {
+      case "ArrowUp":
+        setActiveItem(activeItem - 1);
+        break;
+      case "ArrowDown":
+        setActiveItem(activeItem + 1);
+        break;
+    }
+  };
+
+  // Helper function to determine enter press on a listItem
+  const useEnterClickDetect = (ref) => {
+    document.addEventListener("keyup", function (event) {
+      if (ref.current && !ref.current.contains(event.target)) {
+        if (event.key === "Enter") {
+          // Cancel the default action, if needed
+          event.preventDefault();
+          // Trigger the button element with a click
+          document.getElementById("listItem").click();
+        }
+      }
+    });
+  };
+
+  useEnterClickDetect(listItemRef);
 
   // Helper function to determine click outside of query result table
   const useOutsideClickDetect = (ref) => {
@@ -16,6 +45,7 @@ export const SearchBar = () => {
       const handleClickOutside = (event) => {
         if (ref.current && !ref.current.contains(event.target)) {
           setResultsVisible(false);
+          setActiveItem(activeItem - 1);
         }
       };
 
@@ -28,7 +58,7 @@ export const SearchBar = () => {
     }, [ref]);
   };
 
-  useOutsideClickDetect(wrapperRef);
+  useOutsideClickDetect(listWrapperRef);
 
   //  Map query results into ListItems with proper icons
   const children =
@@ -36,18 +66,24 @@ export const SearchBar = () => {
       <div>No results found</div>
     ) : (
       items.map((item, index) => (
-        <a href={item.url}>
-          <ListItem key={index}>
-            <ListItemText>
-              {item.type === "user" ? (
-                <PersonIcon style={{ fontSize: 20, color: "#282c34" }} />
-              ) : (
-                <GitHubIcon style={{ fontSize: 20, color: "#282c34" }} />
-              )}
-              <span className="listItemText">{item.name}</span>
-            </ListItemText>
-          </ListItem>
-        </a>
+        <ListItem
+          id="listItem"
+          key={index}
+          button
+          type="submit"
+          component="button"
+          href={item.url}
+          ref={listItemRef}
+        >
+          <ListItemText className={activeItem === index ? "active" : ""}>
+            {item.type === "user" ? (
+              <PersonIcon style={{ fontSize: 20, color: "#282c34" }} />
+            ) : (
+              <GitHubIcon style={{ fontSize: 20, color: "#282c34" }} />
+            )}
+            <span className="listItemText">{item.name}</span>
+          </ListItemText>
+        </ListItem>
       ))
     );
 
@@ -98,9 +134,7 @@ export const SearchBar = () => {
 
   return (
     <div className="searchbar-container">
-      <div className="searchbar-placeholder">
-        Search for GitHub repos or users
-      </div>
+      <div className="searchbar-title">Search for GitHub repos or users</div>
       <input
         className={"searchbar-textfield" + (!failure ? "" : " failure")}
         minLength="3"
@@ -114,7 +148,7 @@ export const SearchBar = () => {
         }}
       />
       <span className="border" />
-      {resultsVisible ? <List ref={wrapperRef}>{children}</List> : null}
+      {resultsVisible ? <List ref={listWrapperRef}>{children}</List> : null}
     </div>
   );
 };

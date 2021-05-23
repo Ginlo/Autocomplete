@@ -3,8 +3,9 @@
   background-color: #282c34;
   min-height: 100vh;
 
-  .searchbar-placeholder {
+  .searchbar-title {
     color: #f8f8ff;
+    user-select: none;
   }
 
   .searchbar-textfield {
@@ -27,6 +28,15 @@
     }
   }
 
+  .MuiButtonBase-root {
+    cursor: default;
+
+    &:hover,
+    &:active {
+      background-color: transparent;
+    }
+  }
+
   .MuiList-root {
     margin-left: 50px;
     margin-right: 50px;
@@ -37,6 +47,7 @@
     .MuiListItemText-root {
       background-color: rgb(40, 44, 52, 0.05);
       border-radius: 4px;
+      cursor: pointer;
 
       &:hover {
         background-color: rgb(40, 44, 52, 0.1);
@@ -50,15 +61,10 @@
         margin-left: 30px;
       }
     }
+    .active {
+      background-color: rgb(40, 44, 52, 0.1);
+    }
   }
-}
-
-a,
-a:hover,
-a:focus,
-a:active {
-  text-decoration: none;
-  color: inherit;
 }
 
 svg {
